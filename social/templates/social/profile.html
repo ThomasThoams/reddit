@@ -1,0 +1,20 @@
+<!-- social/templates/social/profile.html -->
+{% extends 'base.html' %}
+
+{% block title %}Profil - Mon Réseau Social{% endblock %}
+
+{% block content %}
+  <h2>Profil de {{ user.username }}</h2>
+  {% if user.profile_picture %}
+    <img src="{{ user.profile_picture.url }}" alt="Photo de profil" width="150" height="150">
+  {% else %}
+    <p>Vous n'avez pas encore de photo de profil.</p>
+  {% endif %}
+  <ul>
+    <li>Email : {{ user.email }}</li>
+    <li>Nombre de posts : {{ num_posts }}</li>
+    <li>Nombre de commentaires : {{ num_comments }}</li>
+    <li>Nombre de posts upvotés : {{ num_upvoted_posts }}</li>
+  </ul>
+  <a href="{% url 'delete_account' %}">Supprimer mon compte</a>
+{% endblock %}

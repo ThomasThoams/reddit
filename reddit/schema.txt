@@ -1,0 +1,69 @@
+1. Utilisateur (User)
+Champs intégrés de Django :
+username : CharField, nom d'utilisateur unique.
+email : EmailField, adresse e-mail unique.
+password : CharField, mot de passe hashé.
+Champs supplémentaires :
+profile_picture : ImageField, photo de profil.
+Relations :
+communities_joined : ManyToManyField vers Community (les communautés auxquelles l'utilisateur est abonné).
+posts : Reverse ForeignKey depuis Post (les posts créés par l'utilisateur).
+comments : Reverse ForeignKey depuis Comment (les commentaires de l'utilisateur).
+votes : Reverse ForeignKey depuis Vote (les votes de l'utilisateur).
+
+2. Communauté (Community)
+Champs :
+name : CharField, nom unique de la communauté.
+description : TextField, description de la communauté.
+created_at : DateTimeField, date de création.
+Relations :
+creator : ForeignKey vers User (créateur de la communauté).
+members : ManyToManyField vers User (membres de la communauté).
+posts : Reverse ForeignKey depuis Post (les posts de la communauté).
+
+3. Post (Post)
+Champs :
+title : CharField, titre du post.
+content : TextField, contenu du post.
+image : ImageField, image associée au post (optionnel).
+created_at : DateTimeField, date de création.
+updated_at : DateTimeField, date de mise à jour.
+Relations :
+author : ForeignKey vers User (auteur du post).
+community : ForeignKey vers Community (communauté associée).
+votes : Reverse ForeignKey depuis Vote (votes reçus par le post).
+comments : Reverse ForeignKey depuis Comment (commentaires sur le post).
+
+4. Commentaire (Comment)
+Champs :
+content : TextField, contenu du commentaire.
+created_at : DateTimeField, date de création.
+Relations :
+author : ForeignKey vers User (auteur du commentaire).
+post : ForeignKey vers Post (post associé).
+
+5. Vote (Vote)
+Champs :
+vote_type : IntegerField, type de vote (1 pour upvote, -1 pour downvote).
+created_at : DateTimeField, date du vote.
+Relations :
+user : ForeignKey vers User (utilisateur qui a voté).
+post : ForeignKey vers Post (post voté).
+
+Relations entre les modèles :
+
+Utilisateur et Communauté :
+Relation ManyToMany : un utilisateur peut suivre plusieurs communautés, et une communauté peut avoir plusieurs membres.
+
+Utilisateur et Post :
+Relation OneToMany : un utilisateur peut créer plusieurs posts, mais un post n'a qu'un seul auteur.
+
+Utilisateur et Commentaire :
+Relation OneToMany : un utilisateur peut écrire plusieurs commentaires, mais un commentaire n'a qu'un seul auteur.
+
+Communauté et Post :
+Relation OneToMany : une communauté peut avoir plusieurs posts, mais un post appartient à une seule communauté.
+Post et Commentaire :
+Relation OneToMany : un post peut avoir plusieurs commentaires, mais un commentaire est associé à un seul post.
+Utilisateur, Post et Vote :
+Relation ManyToMany via le modèle intermédiaire Vote : un utilisateur peut voter sur plusieurs posts, et un post peut recevoir des votes de plusieurs utilisateurs.
