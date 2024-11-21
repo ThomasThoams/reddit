@@ -1,0 +1,18 @@
+<!-- templates/communities/community_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Communautés - Mon Réseau Social{% endblock %}
+
+{% block content %}
+    <h2>Liste des communautés</h2>
+    <ul>
+        {% for community in communities %}
+            <li>
+                <a href="{% url 'community_detail' pk=community.pk %}">{{ community.name }}</a>
+            </li>
+        {% empty %}
+            <p>Aucune communauté disponible.</p>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'create_community' %}">Créer une nouvelle communauté</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+<!-- templates/posts/create_post.html -->
+{% extends 'base.html' %}
+
+{% block title %}Créer un post - Mon Réseau Social{% endblock %}
+
+{% block content %}
+    <h2>Créer un nouveau post</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Publier</button>
+    </form>
+{% endblock %}

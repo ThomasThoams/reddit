@@ -1,0 +1,12 @@
+<!-- templates/core/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Mon Réseau Social{% endblock %}
+
+{% block content %}
+    <h2>Bienvenue sur Mon Réseau Social</h2>
+    <p>C'est le meilleur endroit pour partager et discuter avec les autres !</p>
+    {% if not user.is_authenticated %}
+        <p><a href="{% url 'signup' %}">Inscrivez-vous</a> ou <a href="{% url 'login' %}">connectez-vous</a> pour commencer.</p>
+    {% endif %}
+{% endblock %}
