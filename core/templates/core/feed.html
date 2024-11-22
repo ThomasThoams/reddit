@@ -5,33 +5,37 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h2>Fil d'actualité</h2>
         {% if posts %}
             {% for post in posts %}
-            <div class="post">
-                <h3><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h3>
-                <p>Par {{ post.author.username }} dans <a href="{% url 'community_detail' pk=post.community.pk %}">{{ post.community.name }}</a></p>
-                {% if post.image %}
-                    <img src="{{ post.image.url }}" alt="Image du post">
-                {% endif %}
-                <p>{{ post.content|truncatewords:30 }}</p>
-                <p>Score : {{ post.score }}</p>
-                <p>
-                    <form method="post" action="{% url 'vote' post_id=post.pk vote_type=1 %}">
-                        {% csrf_token %}
-                        <button type="submit">Upvote</button>
-                    </form>
-                    <form method="post" action="{% url 'vote' post_id=post.pk vote_type=-1 %}">
-                        {% csrf_token %}
-                        <button type="submit">Downvote</button>
-                    </form>
-                </p>
-            </div>
+                <div class="post">
+                    <div class="votes">
+                        <form method="post" action="{% url 'vote' post_id=post.pk vote_type=1 %}">
+                            {% csrf_token %}
+                            <button type="submit" class="vote-button upvote">&#9650;</button>
+                        </form>
+                        <div class="score">{{ post.score }}</div>
+                        <form method="post" action="{% url 'vote' post_id=post.pk vote_type=-1 %}">
+                            {% csrf_token %}
+                            <button type="submit" class="vote-button downvote">&#9660;</button>
+                        </form>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-title">
+                            <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+                        </div>
+                        <div class="post-details">
+                            Publié par {{ post.author.username }} dans <a href="{% url 'community_detail' pk=post.community.pk %}">{{ post.community.name }}</a> • {{ post.created_at|timesince }} ago
+                        </div>
+                        <div class="post-actions">
+                            <a href="{% url 'post_detail' pk=post.pk %}">{{ post.comments.count }} commentaires</a>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         {% else %}
             <p>Aucun post à afficher. Rejoignez des communautés pour voir les posts correspondants.</p>
         {% endif %}
-        <a href="{% url 'create_post' %}">Créer un nouveau post</a>
+        <a href="{% url 'create_post' %}" class="button">Créer un nouveau post</a>
     {% else %}
         <h2>Bienvenue sur Mon Réseau Social</h2>
         <p>C'est le meilleur endroit pour partager et discuter avec les autres !</p>

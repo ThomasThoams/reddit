@@ -11,6 +11,13 @@
 <body>
     <header>
         <h1><a href="{% url 'home' %}">Mon Réseau Social</a></h1>
+        <div class="search-bar">
+            <form method="get" action="{% url 'search_results' %}">
+                {% csrf_token %}
+                {{ search_form.query }}
+                <button type="submit">🔍</button>
+            </form>
+        </div>
         <nav>
             <ul>
                 {% if user.is_authenticated %}

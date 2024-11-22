@@ -20,7 +20,17 @@
       <button type="submit">Downvote</button>
     </form>
   </p>
+
+  <h3>Commentaires</h3>
+  {% include 'posts/comment_list.html' with comments=post.comments.all %}
   
+  <h3>Ajouter un commentaire</h3>
+  <form method="post">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit">Commenter</button>
+  </form>
+
   {% if user == post.author %}
     <a href="{% url 'delete_post' pk=post.pk %}" class="delete-button">Supprimer ce post</a>
   {% endif %}

@@ -10,7 +10,7 @@ urlpatterns = [
         authentication_form=LoginForm,
         redirect_authenticated_user=True
     ), name='login'),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('delete_account/', DeleteAccountView.as_view(), name='delete_account'),
 ]

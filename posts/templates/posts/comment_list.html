@@ -1,0 +1,18 @@
+<!-- templates/posts/comment_list.html -->
+{% for comment in comments %}
+    <div class="comment">
+        <p><strong>{{ comment.author.username }}</strong> • {{ comment.created_at|timesince }} ago</p>
+        <p>{{ comment.content }}</p>
+        <!-- Formulaire pour répondre au commentaire -->
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+            {{ comment_form.as_p }}
+            <button type="submit">Répondre</button>
+        </form>
+        <!-- Affichage des réponses -->
+        {% if comment.replies.all %}
+            {% include 'posts/comment_list.html' with comments=comment.replies.all level=level|add:2 %}
+        {% endif %}
+    </div>
+{% endfor %}

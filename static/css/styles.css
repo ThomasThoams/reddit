@@ -95,13 +95,97 @@ h3, h4 {
 
 /* POST STYLES */
 .post {
+  display: flex;
   background-color: #fff;
-  padding: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  border: 1px solid #ddd;
 }
 
+.post .votes {
+  width: 60px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-right: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.vote-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.vote-button.upvote:hover {
+  color: #ff4500; /* Reddit Orange */
+}
+
+.vote-button.downvote:hover {
+  color: #7193ff; /* Reddit Blue */
+}
+
+.score {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.post .post-content {
+  flex: 1;
+  padding: 10px;
+}
+
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.post-details {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.post-actions {
+  font-size: 12px;
+  color: #888;
+}
+
+.post-actions a {
+  color: #888;
+  text-decoration: none;
+}
+
+.post-actions a:hover {
+  text-decoration: underline;
+}
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.post-details {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.post-actions {
+  font-size: 12px;
+  color: #888;
+}
+
+.post-actions a {
+  color: #888;
+  text-decoration: none;
+}
+
+.post-actions a:hover {
+  text-decoration: underline;
+}
 .post h3, .post h4 {
   margin-top: 0;
 }
@@ -276,4 +360,24 @@ th, td {
   main {
     padding: 15px;
   }
+}
+
+.search-bar {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 20px;
+}
+
+.search-bar input[type="text"] {
+  padding: 5px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
 }
