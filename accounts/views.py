@@ -10,8 +10,8 @@ from django.shortcuts import redirect
 
 class SignUpView(CreateView):
     form_class = SignUpForm
+    success_url = reverse_lazy('home')
     template_name = 'accounts/signup.html'
-    success_url = reverse_lazy('feed')
 
     def form_valid(self, form):
         response = super().form_valid(form)
