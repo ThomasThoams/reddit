@@ -23,7 +23,12 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'profile' %}">Profil</a></li>
                     <li><a href="{% url 'community_list' %}">Communautés</a></li>
-                    <li><a href="{% url 'logout' %}">Déconnexion</a></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-button">Déconnexion</button>
+                        </form>
+                    </li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Connexion</a></li>
                     <li><a href="{% url 'signup' %}">Inscription</a></li>

@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import LoginForm
-from .views import SignUpView, ProfileView, DeleteAccountView
+from .views import SignUpView, ProfileView, DeleteAccountView,CustomLogoutView
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
@@ -10,7 +10,7 @@ urlpatterns = [
         authentication_form=LoginForm,
         redirect_authenticated_user=True
     ), name='login'),
-    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('logout/', CustomLogoutView.as_view(next_page='home'), name='logout'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('delete_account/', DeleteAccountView.as_view(), name='delete_account'),
 ]

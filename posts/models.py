@@ -13,9 +13,10 @@ class Post(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name='posts')
     upvotes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='upvoted_posts', blank=True)
     downvotes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='downvoted_posts', blank=True)
-    score = models.IntegerField(default=0)
+
+    @property
     def score(self):
-        return self.votes.aggregate(total=models.Sum('vote_type'))['total'] or 0
+        return self.upvotes.count() - self.downvotes.count()
 
     def __str__(self):
         return self.title
@@ -27,6 +28,9 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Commentaire de {self.author.username} sur {self.post.title}'
 
 
 class Vote(models.Model):

@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.contrib.auth.views import LogoutView
 
 class SignUpView(CreateView):
     form_class = SignUpForm
@@ -33,3 +34,7 @@ class DeleteAccountView(LoginRequiredMixin, View):
         user.delete()
         messages.success(request, 'Votre compte a été supprimé avec succès.')
         return redirect('home')
+
+class CustomLogoutView(LogoutView):
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
