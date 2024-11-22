@@ -5,8 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm
 from .models import Post, Vote
 from django.views import View
-from django.shortcuts import redirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -44,13 +43,20 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 class VoteView(LoginRequiredMixin, View):
     def post(self, request, post_id, vote_type):
         post = get_object_or_404(Post, id=post_id)
+        vote_type = int(vote_type)
+        # Vérifier que vote_type est bien 1 ou -1
         if vote_type in [1, -1]:
-            Vote.objects.update_or_create(
-                user=request.user,
-                post=post,
-                defaults={'vote_type': vote_type}
-            )
-        return redirect('post_detail', pk=post_id)
+            # Logique pour gérer les votes
+            if vote_type == 1:
+                post.upvotes.add(request.user)
+                post.downvotes.remove(request.user)
+            elif vote_type == -1:
+                post.downvotes.add(request.user)
+                post.upvotes.remove(request.user)
+            post.score = post.upvotes.count() - post.downvotes.count()
+            post.save()
+        next_url = request.POST.get('next', 'home')
+        return redirect(next_url)
     
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post

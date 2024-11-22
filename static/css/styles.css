@@ -100,6 +100,8 @@ h3, h4 {
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .post .votes {
@@ -349,16 +351,16 @@ th, td {
 
 /* RESPONSIVE STYLES */
 @media (max-width: 768px) {
-  nav ul {
-    flex-direction: column;
+  .feed-container {
+      flex-direction: column;
+      align-items: center;
   }
 
-  nav li {
-    margin: 5px 0;
-  }
-
-  main {
-    padding: 15px;
+  .main-content, .sidebar {
+      flex: 1 0 100%;
+      max-width: 600px;
+      margin-right: 0;
+      margin-bottom: 20px;
   }
 }
 
@@ -380,4 +382,56 @@ th, td {
   border: none;
   cursor: pointer;
   font-size: 16px;
+}
+
+/* Container for the feed and sidebar */
+.feed-container {
+  display: flex;
+  justify-content: center; /* Centre le contenu horizontalement */
+}
+
+/* Main content area */
+.main-content {
+  flex: 0 0 60%; /* La zone de contenu principal occupe 60% de la largeur */
+  margin-right: 20px;
+}
+
+/* Sidebar area */
+.sidebar {
+  flex: 0 0 25%; /* La sidebar occupe 25% de la largeur */
+  background-color: #f8f9fa;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.main-content, .sidebar {
+  align-self: flex-start;
+}
+
+
+/* Popular communities list */
+.popular-communities {
+  list-style-type: none;
+  padding: 0;
+}
+
+.popular-communities li {
+  margin-bottom: 10px;
+}
+
+.popular-communities li a {
+  font-weight: bold;
+  color: #3b5998;
+  text-decoration: none;
+}
+
+.popular-communities li a:hover {
+  text-decoration: underline;
+}
+
+.popular-communities li span {
+  display: block;
+  font-size: 12px;
+  color: #888;
 }

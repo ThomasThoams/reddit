@@ -4,41 +4,60 @@
 {% block title %}Accueil - Mon Réseau Social{% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        {% if posts %}
-            {% for post in posts %}
-                <div class="post">
-                    <div class="votes">
-                        <form method="post" action="{% url 'vote' post_id=post.pk vote_type=1 %}">
-                            {% csrf_token %}
-                            <button type="submit" class="vote-button upvote">&#9650;</button>
-                        </form>
-                        <div class="score">{{ post.score }}</div>
-                        <form method="post" action="{% url 'vote' post_id=post.pk vote_type=-1 %}">
-                            {% csrf_token %}
-                            <button type="submit" class="vote-button downvote">&#9660;</button>
-                        </form>
+<div class="feed-container">
+    <div class="main-content">
+        {% if user.is_authenticated %}
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="post">
+                        <!-- Section des votes -->
+                        <div class="votes">
+                            <form method="post" action="{% url 'vote' post_id=post.pk vote_type=1 %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <button type="submit" class="vote-button upvote">&#9650;</button>
+                            </form>
+                            <div class="score">{{ post.score }}</div>
+                            <form method="post" action="{% url 'vote' post_id=post.pk vote_type=-1 %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <button type="submit" class="vote-button downvote">&#9660;</button>
+                            </form>
+                        </div>
+                        <!-- Contenu du post -->
+                        <div class="post-content">
+                            <div class="post-title">
+                                <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+                            </div>
+                            <div class="post-details">
+                                Publié par {{ post.author.username }} dans <a href="{% url 'community_detail' pk=post.community.pk %}">{{ post.community.name }}</a> • {{ post.created_at|timesince }} ago
+                            </div>
+                            <div class="post-actions">
+                                <a href="{% url 'post_detail' pk=post.pk %}">{{ post.comments.count }} commentaires</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="post-content">
-                        <div class="post-title">
-                            <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
-                        </div>
-                        <div class="post-details">
-                            Publié par {{ post.author.username }} dans <a href="{% url 'community_detail' pk=post.community.pk %}">{{ post.community.name }}</a> • {{ post.created_at|timesince }} ago
-                        </div>
-                        <div class="post-actions">
-                            <a href="{% url 'post_detail' pk=post.pk %}">{{ post.comments.count }} commentaires</a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>Aucun post à afficher. Rejoignez des communautés pour voir les posts correspondants.</p>
+            {% endif %}
+            <a href="{% url 'create_post' %}" class="button">Créer un nouveau post</a>
         {% else %}
-            <p>Aucun post à afficher. Rejoignez des communautés pour voir les posts correspondants.</p>
+            <h2>Bienvenue sur Mon Réseau Social</h2>
+            <p>C'est le meilleur endroit pour partager et discuter avec les autres !</p>
+            <p><a href="{% url 'signup' %}">Inscrivez-vous</a> ou <a href="{% url 'login' %}">connectez-vous</a> pour commencer.</p>
         {% endif %}
-        <a href="{% url 'create_post' %}" class="button">Créer un nouveau post</a>
-    {% else %}
-        <h2>Bienvenue sur Mon Réseau Social</h2>
-        <p>C'est le meilleur endroit pour partager et discuter avec les autres !</p>
-        <p><a href="{% url 'signup' %}">Inscrivez-vous</a> ou <a href="{% url 'login' %}">connectez-vous</a> pour commencer.</p>
-    {% endif %}
+    </div>
+    <div class="sidebar">
+        <h3>Communautés populaires</h3>
+        <ul class="popular-communities">
+            {% for community in popular_communities %}
+                <li>
+                    <a href="{% url 'community_detail' pk=community.pk %}">{{ community.name }}</a>
+                    <span>{{ community.members.count }} membres</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}
