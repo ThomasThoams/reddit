@@ -3,10 +3,10 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth import login
 from .forms import SignUpForm
-from .models import User
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class SignUpView(CreateView):
-    model = User
     form_class = SignUpForm
     template_name = 'accounts/signup.html'
     success_url = reverse_lazy('feed')
@@ -15,3 +15,6 @@ class SignUpView(CreateView):
         response = super().form_valid(form)
         login(self.request, self.object)
         return response
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/profile.html'
