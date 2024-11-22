@@ -1,7 +1,7 @@
 # posts/views.py
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import CreateView, DetailView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm
 from .models import Post, Vote
 from django.views import View
@@ -38,3 +38,12 @@ class VoteView(LoginRequiredMixin, View):
                 defaults={'vote_type': vote_type}
             )
         return redirect('post_detail', pk=post_id)
+    
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    template_name = 'posts/post_confirm_delete.html'
+    success_url = reverse_lazy('feed')
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
